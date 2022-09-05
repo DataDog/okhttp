@@ -24,6 +24,7 @@ import java.net.CookieManager;
 import java.net.HttpRetryException;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.ProtocolException;
 import java.net.Proxy;
@@ -3585,11 +3586,11 @@ public final class URLConnectionTest {
   }
 
   @Test public void urlHostWithNul() throws Exception {
-    URLConnection urlConnection = urlFactory.open(new URL("http://host\u0000/"));
     try {
+      URLConnection urlConnection = urlFactory.open(new URL("http://host\u0000/"));
       urlConnection.getInputStream();
       fail();
-    } catch (UnknownHostException expected) {
+    } catch (UnknownHostException | MalformedURLException expected) {
     }
   }
 
@@ -3604,11 +3605,11 @@ public final class URLConnectionTest {
   }
 
   @Test public void urlWithBadAsciiHost() throws Exception {
-    URLConnection urlConnection = urlFactory.open(new URL("http://host\u0001/"));
     try {
+      URLConnection urlConnection = urlFactory.open(new URL("http://host\u0001/"));
       urlConnection.getInputStream();
       fail();
-    } catch (UnknownHostException expected) {
+    } catch (UnknownHostException | MalformedURLException expected) {
     }
   }
 
