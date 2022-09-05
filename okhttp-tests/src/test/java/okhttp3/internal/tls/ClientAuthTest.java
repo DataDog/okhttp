@@ -46,8 +46,10 @@ import static okhttp3.TestUtil.defaultClient;
 import static okhttp3.internal.platform.PlatformTest.getPlatform;
 import static okhttp3.tls.internal.TlsUtil.newKeyManager;
 import static okhttp3.tls.internal.TlsUtil.newTrustManager;
+import static org.hamcrest.CoreMatchers.either;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public final class ClientAuthTest {
@@ -185,7 +187,7 @@ public final class ClientAuthTest {
     } catch (SSLHandshakeException expected) {
     } catch (SSLException expected) {
       String jvmVersion = System.getProperty("java.specification.version");
-      assertEquals("11", jvmVersion);
+      assertThat(jvmVersion, either(is("1.8")).or(is("11")));
     } catch (SocketException expected) {
       assertEquals("jdk9", getPlatform());
     }
@@ -237,7 +239,7 @@ public final class ClientAuthTest {
     } catch (SSLException expected) {
       // javax.net.ssl.SSLException: readRecord
       String jvmVersion = System.getProperty("java.specification.version");
-      assertEquals("11", jvmVersion);
+      assertThat(jvmVersion, either(is("1.8")).or(is("11")));
     } catch (SocketException expected) {
       assertEquals("jdk9", getPlatform());
     }
