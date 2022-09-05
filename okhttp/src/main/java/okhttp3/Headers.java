@@ -270,7 +270,7 @@ public final class Headers {
       char c = value.charAt(i);
       if ((c <= '\u001f' && c != '\t') || c >= '\u007f') {
         throw new IllegalArgumentException(Util.format(
-            "Unexpected char %#04x at %d in %s value: %s", (int) c, i, name, value));
+            "Unexpected char %#04x at %d in %s value", (int) c, i, name));
       }
     }
   }
@@ -299,7 +299,7 @@ public final class Headers {
     public Builder add(String line) {
       int index = line.indexOf(":");
       if (index == -1) {
-        throw new IllegalArgumentException("Unexpected header: " + line);
+        throw new IllegalArgumentException("Unexpected header");
       }
       return add(line.substring(0, index).trim(), line.substring(index + 1));
     }
