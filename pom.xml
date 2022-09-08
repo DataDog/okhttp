@@ -9,7 +9,7 @@
     <version>7</version>
   </parent>
 
-  <groupId>com.datadog.okhttp3</groupId>
+  <groupId>com.datadoghq.okhttp3</groupId>
   <artifactId>parent</artifactId>
   <version>3.12.14-SNAPSHOT</version>
   <packaging>pom</packaging>
