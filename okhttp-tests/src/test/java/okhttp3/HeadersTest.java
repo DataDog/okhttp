@@ -329,7 +329,7 @@ public final class HeadersTest {
       new Headers.Builder().add("header1", "valué1");
       fail("Should have complained about invalid value");
     } catch (IllegalArgumentException expected) {
-      assertEquals("Unexpected char 0xe9 at 4 in header1 value: valué1",
+      assertEquals("Unexpected char 0xe9 at 4 in header1 value",
           expected.getMessage());
     }
   }
@@ -349,7 +349,7 @@ public final class HeadersTest {
       Headers.of("header1", "valué1");
       fail("Should have complained about invalid value");
     } catch (IllegalArgumentException expected) {
-      assertEquals("Unexpected char 0xe9 at 4 in header1 value: valué1",
+      assertEquals("Unexpected char 0xe9 at 4 in header1 value",
           expected.getMessage());
     }
   }
@@ -369,7 +369,7 @@ public final class HeadersTest {
       Headers.of(singletonMap("header1", "valué1"));
       fail("Should have complained about invalid value");
     } catch (IllegalArgumentException expected) {
-      assertEquals("Unexpected char 0xe9 at 4 in header1 value: valué1",
+      assertEquals("Unexpected char 0xe9 at 4 in header1 value",
           expected.getMessage());
     }
   }

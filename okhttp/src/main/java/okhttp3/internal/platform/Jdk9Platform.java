@@ -82,6 +82,10 @@ final class Jdk9Platform extends Platform {
   }
 
   @Override public X509TrustManager trustManager(SSLSocketFactory sslSocketFactory) {
+    String version = System.getProperty("java.specification.version", "");
+    if (version.startsWith("1.8")) {
+      return super.trustManager(sslSocketFactory);
+    }
     // Not supported due to access checks on JDK 9+:
     // java.lang.reflect.InaccessibleObjectException: Unable to make member of class
     // sun.security.ssl.SSLSocketFactoryImpl accessible:  module java.base does not export
