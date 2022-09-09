@@ -1,0 +1,25 @@
+apply plugin: 'java-library'
+
+repositories {
+  mavenCentral()
+}
+
+version = '3.12.14-datadog'
+
+dependencies {
+  api('com.squareup.okio:okio:1.15.0')
+
+  compileOnly('org.conscrypt:conscrypt-openjdk-uber:1.4.0')
+  compileOnly('org.robolectric:android-all:10-robolectric-5803371')
+  compileOnly('com.google.code.findbugs:jsr305:3.0.2')
+  compileOnly('org.codehaus.mojo:animal-sniffer-annotations:1.17')
+}
+
+task generateJavaTemplate(type: Copy) {
+  from 'src/main/java-templates'
+  into "$buildDir/generated/java"
+  expand('project': [version: version ])
+}
+
+sourceSets.main.java.srcDir  "$buildDir/generated/java"
+compileJava.dependsOn 'generateJavaTemplate'
