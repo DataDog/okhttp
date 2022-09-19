@@ -17,16 +17,17 @@ deploy_to_sonatype:
   tags:
     - "runner:docker"
 
-  image: datadog/dd-trace-java-docker-build:latest
+  image: maven:3.6.3-jdk-8-slim
 
   script:
     # Ensure we don't print commands being run to the logs during credential
     # operations
     - set +x
 
-    - echo "Installing Maven..."
+    - echo "Installing AWSCLI..."
     - apt update
-    - apt install -y maven
+    - apt install -y python3 python3-pip
+    - python3 -m pip install awscli
 
     - echo "Fetching Sonatype user..."
     - export SONATYPE_USER=$(aws ssm get-parameter --region us-east-1 --name ci.okhttp.publishing.sonatype_username --with-decryption --query "Parameter.Value" --out text)
@@ -43,7 +44,7 @@ deploy_to_sonatype:
     - set -x
 
     - echo "Building release..."
-    - mvn -pl :okhttp -DperformRelease=true --settings ./.buildscript/settings.xml clean deploy
+    - mvn -pl :okhttp -DperformRelease=true --settings ./.buildscript/settings.xml -P !alpn-when-jdk8 clean deploy
 
   artifacts:
     expire_in: 12 mos
