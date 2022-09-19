@@ -60,19 +60,16 @@ deploy_to_sonatype:
 create_key:
   stage: create_key
   when: manual
-
-  tags:
-    - "runner:docker"
-
-  image: $REGISTRY/ci/agent-key-management-tools/gpg:1
-
+  needs: []
+  tags: [ "runner:docker", "size:large" ]
   variables:
     PROJECT_NAME: "okhttp"
-
+    EXPORT_TO_KEYSERVER: "false"
+  image: $REGISTRY/ci/agent-key-management-tools/gpg:1
   script:
+    - mkdir pubkeys
     - /create.sh
-
   artifacts:
     expire_in: 13 mos
     paths:
-      - ./pubkeys/
+      - pubkeys
