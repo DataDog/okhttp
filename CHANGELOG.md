@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 3.12.14
+
+_2022-09-20_
+
+* Fix: Don't leak HTTP headers when setting invalid value.
+
 ## Version 3.12.0
 
 _2018-11-16_
