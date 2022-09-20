@@ -49,13 +49,13 @@ deploy_to_sonatype:
   artifacts:
     expire_in: 12 mos
     paths:
-      - ./target/*.jar
-      - ./target/*.pom
-      - ./target/*.asc
-      - ./target/*.md5
-      - ./target/*.sha1
-      - ./target/*.sha256
-      - ./target/*.sha512
+      - okhttp/target/*.jar
+      - okhttp/target/*.pom
+      - okhttp/target/*.asc
+      - okhttp/target/*.md5
+      - okhttp/target/*.sha1
+      - okhttp/target/*.sha256
+      - okhttp/target/*.sha512
 
 # This job creates the GPG key used to sign the releases
 create_key:
