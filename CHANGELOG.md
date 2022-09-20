@@ -5,7 +5,7 @@ Change Log
 
 _2022-09-20_
 
-* Fix: Don't leak HTTP headers when setting invalid value.
+* Fix: Don't expose HTTP headers when setting invalid value. Fix [information exposure](https://security.snyk.io/vuln/SNYK-JAVA-COMSQUAREUPOKHTTP3-2958044).
 
 ## Version 3.12.0
 
