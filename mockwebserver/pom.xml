@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.datadoghq.okhttp3</groupId>
     <artifactId>parent</artifactId>
-    <version>3.12.14-SNAPSHOT</version>
+    <version>3.12.14</version>
   </parent>
 
   <artifactId>mockwebserver</artifactId>

@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 3.12.14
+
+_2022-09-20_
+
+* Fix: Don't expose HTTP headers when setting invalid value. Fix [information exposure](https://security.snyk.io/vuln/SNYK-JAVA-COMSQUAREUPOKHTTP3-2958044).
+
 ## Version 3.12.0
 
 _2018-11-16_
