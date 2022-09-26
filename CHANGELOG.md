@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 3.12.15
+
+_2022-09-26_
+
+* Fix: Flatten pom file to make okhttp module independent.
+
 ## Version 3.12.14
 
 _2022-09-20_
