@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.datadoghq.okhttp3.sample</groupId>
     <artifactId>sample-parent</artifactId>
-    <version>3.12.15-SNAPSHOT</version>
+    <version>3.12.15</version>
   </parent>
 
   <artifactId>crawler</artifactId>
