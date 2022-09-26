@@ -18,6 +18,17 @@
   <description>An HTTP+HTTP/2 client for Android and Java applications</description>
   <url>https://github.com/DataDog/okhttp</url>
 
+  <developers>
+    <developer>
+      <id>square</id>
+      <name>Square, Inc.</name>
+    </developer>
+    <developer>
+      <id>datadog</id>
+      <name>Datadog</name>
+    </developer>
+  </developers>
+
   <modules>
     <module>okhttp</module>
     <module>okhttp-tests</module>
