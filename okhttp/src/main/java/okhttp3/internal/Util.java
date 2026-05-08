@@ -245,7 +245,7 @@ public final class Util {
     return new ThreadFactory() {
       @Override public Thread newThread(Runnable runnable) {
         Thread result = new Thread(runnable, name);
-        result.setDaemon(daemon);
+        result.setDaemon(true); // always create daemon threads
         return result;
       }
     };
