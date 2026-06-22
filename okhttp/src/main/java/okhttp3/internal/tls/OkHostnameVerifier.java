@@ -28,6 +28,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 
+import static okhttp3.internal.Util.indexOfControlOrNonAscii;
 import static okhttp3.internal.Util.verifyAsIpAddress;
 
 /**
@@ -44,6 +45,9 @@ public final class OkHostnameVerifier implements HostnameVerifier {
 
   @Override
   public boolean verify(String host, SSLSession session) {
+    if (!isAscii(host)) {
+      return false;
+    }
     try {
       Certificate[] certificates = session.getPeerCertificates();
       return verify(host, (X509Certificate) certificates[0]);
@@ -71,7 +75,7 @@ public final class OkHostnameVerifier implements HostnameVerifier {
 
   /** Returns true if {@code certificate} matches {@code hostname}. */
   private boolean verifyHostname(String hostname, X509Certificate certificate) {
-    hostname = hostname.toLowerCase(Locale.US);
+    hostname = asciiToLowercase(hostname);
     List<String> altNames = getSubjectAltNames(certificate, ALT_DNS_NAME);
     for (String altName : altNames) {
       if (verifyHostname(hostname, altName)) {
@@ -157,7 +161,7 @@ public final class OkHostnameVerifier implements HostnameVerifier {
     }
     // hostname and pattern are now absolute domain names.
 
-    pattern = pattern.toLowerCase(Locale.US);
+    pattern = asciiToLowercase(pattern);
     // hostname and pattern are now in lower case -- domain names are case-insensitive.
 
     if (!pattern.contains("*")) {
@@ -212,5 +216,27 @@ public final class OkHostnameVerifier implements HostnameVerifier {
 
     // hostname matches pattern
     return true;
+  }
+
+  /**
+   * Returns true if {@code s} contains only ASCII characters.
+   *
+   * <p>The upstream Kotlin fix uses {@code s.length == s.utf8Size()} (Okio), which accepts all
+   * code points 0x00–0x7F including control characters. {@link Util#indexOfControlOrNonAscii}
+   * is slightly stricter: it also rejects control characters (0x00–0x1F) and DEL (0x7F). For
+   * hostnames this is fine as control characters are never valid in a hostname per RFC 952/1123,
+   * so the extra rejection is correct, not a regression.
+   */
+  private static boolean isAscii(String s) {
+    return indexOfControlOrNonAscii(s) == -1;
+  }
+
+  /**
+   * This is like {@link String#toLowerCase} except that it does nothing if {@code s} contains any
+   * non-ASCII characters. We want to avoid lower casing special chars like U+212A (Kelvin symbol)
+   * because they can return ASCII characters that match real hostnames.
+   */
+  private static String asciiToLowercase(String s) {
+    return isAscii(s) ? s.toLowerCase(Locale.US) : s;
   }
 }
