@@ -108,6 +108,9 @@
                 <goal>flatten</goal>
               </goals>
               <configuration>
+                <!-- "ossrh" is a historical mode name; it still produces the correct
+                     flattened POM format expected by Maven Central Portal (central.sonatype.com).
+                     No change needed despite the OSSRH → Central Portal migration. -->
                 <flattenMode>ossrh</flattenMode>
               </configuration>
             </execution>

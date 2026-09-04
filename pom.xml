@@ -3,12 +3,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <groupId>com.datadoghq.okhttp3</groupId>
   <artifactId>parent</artifactId>
   <version>3.12.15</version>
@@ -721,21 +715,6 @@
         </property>
       </activation>
 
-      <distributionManagement>
-        <snapshotRepository>
-          <id>nexus</id>
-          <!-- Use the localhost endpoint for testing -->
-          <!-- <url>http://localhost:8081/repository/maven-snapshots/</url> -->
-          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-          <id>nexus</id>
-          <!-- Use the localhost endpoint for testing -->
-          <!-- <url>http://localhost:8081/repository/maven-releases/</url> -->
-          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-      </distributionManagement>
-
       <build>
         <plugins>
           <plugin>
@@ -765,16 +744,15 @@
             </executions>
           </plugin>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.6</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.9.0</version>
+            <!-- enble the plugin to run during deploy phase -->
             <extensions>true</extensions>
             <configuration>
-              <serverId>nexus</serverId>
-              <!-- Use the localhost endpoint for testing -->
-              <!-- <nexusUrl>http://localhost:8081/repository/maven-releases/</nexusUrl> -->
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <publishingServerId>central</publishingServerId>
+              <!-- Manual publish for now -->
+              <autoPublish>false</autoPublish>
             </configuration>
           </plugin>
           <plugin>
