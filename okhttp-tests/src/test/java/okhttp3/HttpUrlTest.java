@@ -1610,6 +1610,14 @@ public final class HttpUrlTest {
     assertNull(parse("https://127.0.0.1").topPrivateDomain());
   }
 
+  @Test public void hostnameTelephone() {
+    // https://www.gosecure.net/blog/2020/10/27/weakness-in-java-tls-host-verification/
+    // Map the single character telephone symbol (℡) to the string "tel".
+    assertEquals("tel", parse("http://℡").host());
+    // Map the Kelvin symbol (K) to the string "k".
+    assertEquals("k", parse("http://K").host());
+  }
+
   private void assertInvalid(String string, String exceptionMessage) {
     if (useGet) {
       try {

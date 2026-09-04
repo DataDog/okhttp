@@ -542,6 +542,30 @@ public final class HostnameVerifierTest {
     assertFalse(Util.verifyAsIpAddress("www.nintendo.co.jp"));
   }
 
+  /** https://github.com/square/okhttp/security/advisories/GHSA-g2ro-prf6-rf7g (CVE-2021-0341) */
+  @Test public void verifyHostnameRejectsNonAsciiInPattern() {
+    // U+212A (Kelvin sign) lowercases to 'k' via Locale.US — must not match ASCII 'k.com'
+    assertFalse(OkHostnameVerifier.INSTANCE.verifyHostname("k.com", "K.com"));
+  }
+
+  /** https://github.com/square/okhttp/security/advisories/GHSA-g2ro-prf6-rf7g (CVE-2021-0341) */
+  @Test public void verifyRejectsNonAsciiHostname() throws Exception {
+    // Cert with SAN k.com: without the fix, Kelvin (U+212A) toLowerCase -> 'k' would match
+    SSLSession session = session(""
+        + "-----BEGIN CERTIFICATE-----\n"
+        + "MIIBWTCCAQOgAwIBAgIUCIjtciFGQ7th8gIrYJSJ9LvhSJ4wDQYJKoZIhvcNAQEL\n"
+        + "BQAwEDEOMAwGA1UEAwwFay5jb20wIBcNMjYwNjIyMTQxNDQxWhgPMjEyNjA1Mjkx\n"
+        + "NDE0NDFaMBAxDjAMBgNVBAMMBWsuY29tMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJB\n"
+        + "AK39vBFqL9h7yvHaJE2REXsKTvQbcSMBDDx/145+gbemVt9YpSmywODUGHPKmiLa\n"
+        + "5ZT5g+1fz5Ps4KJ0xyE2G40CAwEAAaMzMDEwEAYDVR0RBAkwB4IFay5jb20wHQYD\n"
+        + "VR0OBBYEFBrWz5ZhWsRW3jSrRnixtwXJIALgMA0GCSqGSIb3DQEBCwUAA0EAX9II\n"
+        + "yp4Pyg7lTwxULabW1EhnSPrc4yl/kQi+HBiW55t1dhi0NV6OY6XS4ctxQJBVwkiJ\n"
+        + "Wbt98UgA+Up7ywDEaw==\n"
+        + "-----END CERTIFICATE-----\n");
+    assertTrue(verifier.verify("k.com", session));
+    assertFalse(verifier.verify("K.com", session)); // U+212A Kelvin: toLowerCase would give 'k'
+  }
+
   private X509Certificate certificate(String certificate) throws Exception {
     return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(
         new ByteArrayInputStream(certificate.getBytes(Util.UTF_8)));
